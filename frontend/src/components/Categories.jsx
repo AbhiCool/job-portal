@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { categories } from "../assets/assets";
 import { AppDataContext } from "../context/AppContext";
+import { serverUrl } from "../utils/constants";
 
 const Categories = () => {
   const { categoriesData } = useContext(AppDataContext);
@@ -27,7 +28,7 @@ const Categories = () => {
               colors[index % colors.length]
             }`}
           >
-            <img src={item.icon} alt="" />
+            <img src={serverUrl + item.logo} alt="" className="w-12 h-12 rounded-full"/>
             <div className="flex flex-col items-center justify-center">
               <h3 className="text-lg font-semibold">{item.name}</h3>
               <p className="text-sm">{item.positions} open positions</p>

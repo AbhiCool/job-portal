@@ -103,9 +103,19 @@ const AppProvider = ({ children }) => {
   const loadCompanies = async () => {
     setIsLoadingCompanies(true);
     try {
-      // const res = await axios.get("/categories");
+      if (!user) {
+        return;
+      }
+      let res;
+      if (user.role === "admin") {
+        res = await axios.get(url.getAllCompanies);
+      }
+      if (user.role === "employer") {
+        res = await axios.get(url.getEmployerCompanies);
+      }
 
       // setCategoriesData(res.data);
+      const { companies } = res.data;
       setCompanyData(companies);
       setIsLoadingCompanies(false);
     } catch (error) {

@@ -1,26 +1,26 @@
 const express = require("express");
 const router = express.Router();
 
-const categoryController = require("../controllers/category.controller");
-
 const upload = require("../middlewares/multer");
 const isAuthenticated = require("../middlewares/isAuthenticated");
+const companyController = require("../controllers/company.controller");
 const isAdmin = require("../middlewares/isAdmin");
+
 router.post(
   "/add",
   isAuthenticated,
-  isAdmin,
   upload.single("logo"),
-  categoryController.addCategory
+  companyController.addCompany
 );
 
-router.get("/all", categoryController.getCategories);
-
-router.delete(
-  "/delete/:id",
+router.get(
+  "/employerCompanies",
   isAuthenticated,
-  isAdmin,
-  categoryController.deleteCategory
+  companyController.getEmployerCompanies
 );
+
+router.get("/all", isAdmin, companyController.getAllCompanies);
+
+router.delete("/delete/:id", isAuthenticated, companyController.deleteCompany);
 
 module.exports = router;

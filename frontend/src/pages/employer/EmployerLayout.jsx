@@ -6,7 +6,7 @@ import { url } from "../../utils/constants";
 import toast from "react-hot-toast";
 
 const EmployerLayout = () => {
-  const { navigate, setUser, axios } = useContext(AppDataContext);
+  const { navigate, user, setUser, axios } = useContext(AppDataContext);
   const sidebarLinks = [
     { name: "Companies", path: "/employer" },
     { name: "Add company", path: "/employer/add-company" },
@@ -33,7 +33,7 @@ const EmployerLayout = () => {
           <img src={assets.logo} alt="" className="min-w-20" />
         </Link>
         <div className="flex items-center gap-5 text-gray-500">
-          <p>Hi! Employer</p>
+          <p>Hi! {user.name}</p>
           <button
             onClick={handleLogout}
             className="border rounded-full text-sm px-4 py-1"

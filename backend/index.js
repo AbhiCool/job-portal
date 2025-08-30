@@ -9,6 +9,7 @@ const errorHandler = require("./middlewares/errorHandler");
 const authRoutes = require("./routes/auth.routes");
 const userRoutes = require("./routes/user.routes");
 const categoryRoutes = require("./routes/category.routes");
+const companyRoutes = require("./routes/company.routes");
 
 connectDB();
 const app = express();
@@ -32,6 +33,7 @@ app.use("/uploads", express.static("uploads"));
 app.use("/auth", authRoutes);
 app.use("/user", userRoutes);
 app.use("/category", categoryRoutes);
+app.use("/company", companyRoutes);
 
 app.use(errorHandler);
 

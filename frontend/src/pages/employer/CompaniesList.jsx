@@ -1,13 +1,26 @@
 import React, { useContext } from "react";
 import { AppDataContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
+import { serverUrl, url } from "../../utils/constants";
 
 const CompaniesList = () => {
-  const { companyData, setCompanyData, navigate } = useContext(AppDataContext);
+  const { companyData, setCompanyData, navigate, axios } =
+    useContext(AppDataContext);
 
-  const handleDelete = (id) => {
-    setCompanyData(companyData.filter((company) => company._id !== id));
-    toast.success("Company deleted successfully");
+  const handleDelete = async (id) => {
+    try {
+      const res = await axios.delete(`${url.deleteCompany}${id}`);
+      const { success, message } = res.data;
+      if (success) {
+        toast.success(message);
+        setCompanyData(companyData.filter((company) => company._id !== id));
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      console.log(error);
+      toast.error(error.response.data.message);
+    }
   };
   const handleAddCompany = () => {
     navigate("/employer/add-company");
@@ -37,7 +50,7 @@ const CompaniesList = () => {
             <tr key={company._id}>
               <td className="p-3 border-b">
                 <img
-                  src={company.logo}
+                  src={serverUrl + company.logo}
                   alt=""
                   className="w-16 h-16 object-cover object-center border"
                 />

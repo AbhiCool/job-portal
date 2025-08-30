@@ -6,7 +6,13 @@ export const url = {
   userProfile: serverUrl + "user/userProfile",
   updateProfile: serverUrl + "user/updateProfile/",
   getAllStudents: serverUrl + "user/getAllStudents",
+
   addCategory: serverUrl + "category/add",
   getCategories: serverUrl + "category/all",
   deleteCategory: serverUrl + "category/delete/",
+
+  addCompany: serverUrl + "company/add",
+  getEmployerCompanies: serverUrl + "company/employerCompanies",
+  getAllCompanies: serverUrl + "company/all",
+  deleteCompany: serverUrl + "company/delete/",
 };

@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { AppDataContext } from "../../context/AppContext";
 import toast from "react-hot-toast";
+import { serverUrl } from "../../utils/constants";
 
 const AllCompanies = () => {
   const { companyData } = useContext(AppDataContext);
@@ -23,7 +24,7 @@ const AllCompanies = () => {
             <tr key={company._id}>
               <td className="p-3 border-b">
                 <img
-                  src={company.logo}
+                  src={serverUrl + company.logo}
                   alt=""
                   className="w-16 h-16 object-cover object-center border"
                 />

@@ -1,10 +1,13 @@
 import React, { useContext, useState } from "react";
 import { AppDataContext } from "../../context/AppContext";
+import { url } from "../../utils/constants";
+import toast from "react-hot-toast";
 
 const AddCompany = () => {
-  const { navigate } = useContext(AppDataContext);
+  const { navigate, axios, companyData, setCompanyData } =
+    useContext(AppDataContext);
 
-  const [companyData, setCompanyData] = useState({
+  const [companyFormData, setCompanyFormData] = useState({
     name: "",
     about: "",
     logo: null,
@@ -17,8 +20,8 @@ const AddCompany = () => {
     const { name, value, files } = e.target;
 
     if (files) {
-      setCompanyData({
-        ...companyData,
+      setCompanyFormData({
+        ...companyFormData,
         [name]: files[0],
       });
 
@@ -26,8 +29,8 @@ const AddCompany = () => {
 
       setPreview(imageUrl);
     } else {
-      setCompanyData({
-        ...companyData,
+      setCompanyFormData({
+        ...companyFormData,
         [name]: value,
       });
     }
@@ -35,9 +38,33 @@ const AddCompany = () => {
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log("companyData", companyData);
+    console.log("companyFormData", companyFormData);
 
-    navigate("/employer");
+    const formPayload = new FormData();
+
+    for (let key in companyFormData) {
+      formPayload.append(key, companyFormData[key]);
+    }
+
+    try {
+      const res = await axios.post(url.addCompany, formPayload, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      const { success, message, company } = res.data;
+      if (success) {
+        toast.success(message);
+        navigate("/employer");
+        setCompanyData([...companyData, company]);
+      } else {
+        toast.error(message);
+      }
+    } catch (error) {
+      console.log(error.response.data);
+      toast.error(error.response.data.message);
+    }
   };
   return (
     <div className="flex items-center max-w-4xl w-full mx-auto">
@@ -70,7 +97,7 @@ const AddCompany = () => {
         <input
           type="text"
           name="name"
-          value={companyData.name}
+          value={companyFormData.name}
           onChange={handleChange}
           placeholder="Enter Name"
           className="w-full border mt-1 border-gray-500/30 focus:border-indigo-500 outline-none rounded py-2.5 px-4"
@@ -80,7 +107,7 @@ const AddCompany = () => {
           <textarea
             name="about"
             rows="4"
-            value={companyData.about}
+            value={companyFormData.about}
             onChange={handleChange}
             placeholder="Enter about"
             className="w-full border mt-1 border-gray-500/30 focus:border-indigo-500 outline-none rounded py-2.5 px-4"
